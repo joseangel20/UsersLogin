@@ -2,17 +2,26 @@ package vista;
 
 import java.awt.Image;
 import javax.swing.*;
+import controlador.*;
+import java.awt.Font;
+import java.awt.HeadlessException;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 
-public class frmLogin extends JFrame {
+public class FrmLogin extends JFrame {
 
     private ImageIcon imagen;
     private Icon icono;
     private final String RUTA_IMAGEN = "src/iconos/usuario.png";
+    byte KEY_ENTER = 10;
 
-    public frmLogin() {
+    public FrmLogin() {
         initComponents();
         setLocationRelativeTo(this);
         pintarImagen(lblImagen, RUTA_IMAGEN);
+        txtUser.setText("jose");
+        txtPassword.setText("123456");
+
     }
 
     /**
@@ -31,16 +40,27 @@ public class frmLogin extends JFrame {
         txtPassword = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lblRegistrarse = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("INICIO DE SESION");
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("BIENVENIDO");
         jLabel1.setPreferredSize(new java.awt.Dimension(100, 16));
+
+        txtUser.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUserKeyPressed(evt);
+            }
+        });
 
         btnEnter.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnEnter.setText("Entrar");
@@ -49,19 +69,39 @@ public class frmLogin extends JFrame {
                 btnEnterActionPerformed(evt);
             }
         });
+        btnEnter.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEnterKeyPressed(evt);
+            }
+        });
 
         lblImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         lblImagen.setPreferredSize(new java.awt.Dimension(512, 512));
 
-        txtPassword.setPreferredSize(new java.awt.Dimension(64, 22));
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
 
         jLabel2.setText("Usuario");
 
         jLabel3.setText("Contraseña");
 
-        jLabel4.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Registrarse");
+        lblRegistrarse.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
+        lblRegistrarse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRegistrarse.setText("Registrarse");
+        lblRegistrarse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRegistrarseMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblRegistrarseMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblRegistrarseMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,7 +113,7 @@ public class frmLogin extends JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
                 .addGap(71, 71, 71)
-                .addComponent(jLabel4)
+                .addComponent(lblRegistrarse)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(134, Short.MAX_VALUE)
@@ -89,7 +129,7 @@ public class frmLogin extends JFrame {
                 .addGap(128, 128, 128)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnEnter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtPassword))
                 .addGap(107, 107, 107))
         );
         layout.setVerticalGroup(
@@ -110,7 +150,7 @@ public class frmLogin extends JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnEnter, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
+                .addComponent(lblRegistrarse)
                 .addGap(55, 55, 55))
         );
 
@@ -118,8 +158,76 @@ public class frmLogin extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterActionPerformed
-        // TODO add your handling code here:
+        validateUser();
     }//GEN-LAST:event_btnEnterActionPerformed
+
+    private void validateUser() throws HeadlessException {
+        char[] password = txtPassword.getPassword();
+        
+        String finalPassword = "";
+        
+        for (char item : password) {
+            finalPassword += item;
+        }
+        
+        if (!ValidationUser.user(txtUser.getText())
+                || !ValidationUser.password(finalPassword)) {
+            JOptionPane.showMessageDialog(this,
+                    "Usuario o contraseña incorreta. Si no estas registrado, "
+                            + "registrarse presionando el texto (Resgistrarse) "
+                            + "debajo del boton entrar.",
+                    "Datos invalidos", JOptionPane.WARNING_MESSAGE);
+        } else {
+            setVisible(false);
+            FrmRegistro frmRegistro = new FrmRegistro(this);
+            frmRegistro.setVisible(true);
+            frmRegistro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frmRegistro.setLocationRelativeTo(this);
+        }
+        
+        txtUser.setText("");
+        txtPassword.setText("");
+        
+        txtUser.requestFocus();
+        txtUser.selectAll();
+    }
+
+    private void lblRegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseClicked
+
+    }//GEN-LAST:event_lblRegistrarseMouseClicked
+
+    private void lblRegistrarseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseEntered
+        Font font = lblRegistrarse.getFont();
+        Map attributes = font.getAttributes();
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        lblRegistrarse.setFont(font.deriveFont(attributes));
+    }//GEN-LAST:event_lblRegistrarseMouseEntered
+
+    private void lblRegistrarseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseExited
+        
+        lblRegistrarse.setFont(new Font("sansserif", 16, 16));
+    }//GEN-LAST:event_lblRegistrarseMouseExited
+
+    private void btnEnterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEnterKeyPressed
+        
+    }//GEN-LAST:event_btnEnterKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+
+    }//GEN-LAST:event_formKeyPressed
+
+    private void txtUserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserKeyPressed
+        if(evt.getKeyCode() == KEY_ENTER){
+            validateUser();
+        }
+    }//GEN-LAST:event_txtUserKeyPressed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        
+        if(evt.getKeyCode() == KEY_ENTER){
+            validateUser();
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -138,20 +246,21 @@ public class frmLogin extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmLogin().setVisible(true);
+                new FrmLogin().setVisible(true);
             }
         });
     }
@@ -161,7 +270,7 @@ public class frmLogin extends JFrame {
         icono = new ImageIcon(imagen.getImage()
                 .getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(),
                         Image.SCALE_DEFAULT));
-        
+
         lbl.setIcon(icono);
     }
 
@@ -170,8 +279,8 @@ public class frmLogin extends JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblImagen;
+    private javax.swing.JLabel lblRegistrarse;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
