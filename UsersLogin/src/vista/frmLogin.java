@@ -91,6 +91,7 @@ public class FrmLogin extends JFrame {
         lblRegistrarse.setFont(new java.awt.Font("sansserif", 0, 16)); // NOI18N
         lblRegistrarse.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRegistrarse.setText("Registrarse");
+        lblRegistrarse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRegistrarse.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblRegistrarseMouseClicked(evt);
@@ -172,19 +173,22 @@ public class FrmLogin extends JFrame {
         
         if (!ValidationUser.user(txtUser.getText())
                 || !ValidationUser.password(finalPassword)) {
-            JOptionPane.showMessageDialog(this,
-                    "Usuario o contraseña incorreta. Si no estas registrado, "
-                            + "registrarse presionando el texto (Resgistrarse) "
-                            + "debajo del boton entrar.",
-                    "Datos invalidos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, """
+                                                Debes ingresar su usuario y contraseña
+                                                Si no está registrado debe registrarse""",
+                    "DATOS DE USUARIOS", JOptionPane.WARNING_MESSAGE);
         } else {
             setVisible(false);
-            FrmRegistro frmRegistro = new FrmRegistro(this);
+            FrmRecords frmRegistro = new FrmRecords(this);
             frmRegistro.setVisible(true);
-            frmRegistro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frmRegistro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frmRegistro.setLocationRelativeTo(this);
         }
         
+        setFocusAndClearUser();
+    }
+
+    public void setFocusAndClearUser() {
         txtUser.setText("");
         txtPassword.setText("");
         
@@ -193,7 +197,11 @@ public class FrmLogin extends JFrame {
     }
 
     private void lblRegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseClicked
-
+        FrmRegister frmRegister = new FrmRegister(this);
+        frmRegister.setVisible(true);
+        frmRegister.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frmRegister.setLocationRelativeTo(this);
+        this.setVisible(false);
     }//GEN-LAST:event_lblRegistrarseMouseClicked
 
     private void lblRegistrarseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseEntered

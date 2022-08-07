@@ -1,7 +1,7 @@
 package controlador;
 import vista.FrmLogin;
 
-public class ValidationUser {
+public final class ValidationUser {
     FrmLogin frmLogin;
     
     public static Boolean user(String user) {
@@ -15,7 +15,6 @@ public class ValidationUser {
     }
 
     public static Boolean password(String password) {
-        System.out.print(password + " ");
         
         if (password.length() > 0) {
             if (password.toLowerCase().equals("123456")) {
