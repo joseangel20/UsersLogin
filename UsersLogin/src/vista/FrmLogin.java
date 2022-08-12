@@ -6,6 +6,10 @@ import controlador.*;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.font.TextAttribute;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class FrmLogin extends JFrame {
@@ -19,9 +23,7 @@ public class FrmLogin extends JFrame {
         initComponents();
         setLocationRelativeTo(this);
         pintarImagen(lblImagen, RUTA_IMAGEN);
-        txtUser.setText("jose");
-        txtPassword.setText("123456");
-
+        
     }
 
     /**
@@ -161,8 +163,9 @@ public class FrmLogin extends JFrame {
     private void btnEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterActionPerformed
         validateUser();
     }//GEN-LAST:event_btnEnterActionPerformed
-
-    private void validateUser() throws HeadlessException {
+    
+    
+    private void validateUser()  {
         char[] password = txtPassword.getPassword();
         
         String finalPassword = "";

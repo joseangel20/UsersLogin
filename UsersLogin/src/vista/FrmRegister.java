@@ -1,7 +1,10 @@
 package vista;
 
+import modelo.User;
+import modelo.FactoryUser;
 import controlador.*;
 import javax.swing.*;
+import modelo.Connexion;
 
 public class FrmRegister extends javax.swing.JFrame {
 
@@ -234,13 +237,13 @@ public class FrmRegister extends javax.swing.JFrame {
 
         boolean tag = true;
 
-        String user = txtUser.getText();
+        String nameUser = txtUser.getText();
         String name = txtName.getText();
         String surname = txtSurname.getText();
         String telephone = txtTelephone.getText();
         String email = txtEmail.getText();
 
-        if (!ValidationRegister.validateUser(user)) {
+        if (!ValidationRegister.validateUser(nameUser)) {
             lblUserError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
@@ -345,9 +348,20 @@ public class FrmRegister extends javax.swing.JFrame {
 
         if (tag) {
             factoryUser = new FactoryUser();
-            User usuario = factoryUser.user(user, name, surname, telephone, email, password);
-        }
 
+            User user = factoryUser.user(nameUser, name, surname, telephone,
+                    email, password);
+
+            if (!Connexion.insertDatos(user)) {
+                System.out.println("La sentencia registrar no se completo "
+                        + "correctamente.");
+            }
+            
+            frmRecords.refreshTable();
+            frmRecords.setVisible(true);
+            
+            this.dispose();
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

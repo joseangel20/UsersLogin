@@ -1,15 +1,42 @@
 package vista;
 
+import modelo.User;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import modelo.Connexion;
+import java.util.ArrayList;
 
 public class FrmRecords extends JFrame {
 
     private FrmLogin frmLogin;
+    private DefaultTableModel dtm;
+    private ArrayList<User> lista;
 
     public FrmRecords(FrmLogin frmLogin) {
         initComponents();
         setLocationRelativeTo(this);
         this.frmLogin = frmLogin;
+        dtm = new DefaultTableModel();
+
+        String[] titulo = {"ID", "USUARIO", "NOMBRE/S", "APELLIDO/S",
+            "TELEFONO", "EMAIL"};
+        dtm.setColumnIdentifiers(titulo);
+        tableUser.setModel(dtm);
+        lista = Connexion.read();
+        refreshTable();
+    }
+
+    public void refreshTable() {
+        while (dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+
+        for (User user : lista) {
+            dtm.addRow(new Object[]{user.getIdUser(), user.getUser(),
+                user.getName(), user.getSurname(), user.getTelephone(),
+                user.getEmail()});
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -19,7 +46,7 @@ public class FrmRecords extends JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableUser = new javax.swing.JTable();
         btnNewUser = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
@@ -43,7 +70,7 @@ public class FrmRecords extends JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -52,17 +79,24 @@ public class FrmRecords extends JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableUser.setColumnSelectionAllowed(true);
+        tableUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableUser.getTableHeader().setReorderingAllowed(false);
+        tableUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableUserMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableUser);
+        tableUser.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,6 +133,7 @@ public class FrmRecords extends JFrame {
 
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pencil.png"))); // NOI18N
         btnEdit.setText("ACTUALIZAR");
+        btnEdit.setEnabled(false);
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
@@ -107,6 +142,12 @@ public class FrmRecords extends JFrame {
 
         btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/trash.png"))); // NOI18N
         btnDelete.setText("ELIMINAR");
+        btnDelete.setEnabled(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,7 +196,7 @@ public class FrmRecords extends JFrame {
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        
+
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -173,7 +214,34 @@ public class FrmRecords extends JFrame {
         frmRegister.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frmRegister.setLocationRelativeTo(this);
         this.setVisible(false);
+
     }//GEN-LAST:event_btnNewUserActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+
+        
+        int selectRow = tableUser.getSelectedRow();
+
+        if (selectRow != -1) {
+            dtm.removeRow(tableUser.getSelectedRow());
+        }
+        
+        if (dtm.getRowCount() != 0) {
+            btnDelete.setEnabled(true);
+        } else {
+            btnDelete.setEnabled(false);
+        }
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void tableUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUserMouseClicked
+       if (dtm.getColumnCount() != 0) {
+           if(tableUser.getSelectedColumn()> 0)
+            btnEdit.setEnabled(true);
+        } else {
+            btnEdit.setEnabled(false);
+        }
+    }//GEN-LAST:event_tableUserMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -184,6 +252,6 @@ public class FrmRecords extends JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tableUser;
     // End of variables declaration//GEN-END:variables
 }
