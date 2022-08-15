@@ -2,8 +2,6 @@ package modelo;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class Connexion {
 
@@ -40,7 +38,6 @@ public final class Connexion {
             connection = DriverManager.getConnection(url + bd, user, password);
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("Conexion no establecida");
-            Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return connection;
@@ -54,6 +51,37 @@ public final class Connexion {
         }
     }
 
+    public static boolean create(User user) {
+
+        try {
+
+            Connexion con = Connexion.getInstance();
+
+            CallableStatement cs
+                    = con.connect().prepareCall("{CALL introducirDatos(?,?,?,?,?,?)}");
+
+            cs.setString(1, user.getUser());
+            cs.setString(2, user.getName());
+            cs.setString(3, user.getSurname());
+            cs.setString(4, user.getTelephone());
+            cs.setString(5, user.getEmail());
+            cs.setString(6, user.getPassword());
+            cs.execute();
+            con.disconnect();
+            cs.close();
+            cs = null;
+
+            con.disconnect();
+
+            return true;
+
+        } catch (SQLException ex) {
+            System.out.println("Datos no insertados.");
+        }
+
+        return false;
+    }
+
     public static ArrayList<User> read() {
         ArrayList<User> lista = new ArrayList<>();
 
@@ -61,7 +89,7 @@ public final class Connexion {
 
             Connexion con = Connexion.getInstance();
             PreparedStatement ps
-                    = con.connect().prepareStatement("SELECT * FROM consulta");
+                    = con.connect().prepareStatement("SELECT * FROM users");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -82,36 +110,45 @@ public final class Connexion {
         return lista;
     }
 
-    public static boolean insertDatos(User user) {
+    public static void update(User user) {
 
         try {
 
             Connexion con = Connexion.getInstance();
-            PreparedStatement ps
-                    = con.connect().prepareStatement("INSERT INTO `users`"
-                            + "(`nameUser`, `NAME`, `surname`, `telephone`, "
-                            + "`email`, `clave`) VALUES (?,?,?,?,?,?)");
-            
-            ps.setString(1, user.getUser());
-            ps.setString(2, user.getName());
-            ps.setString(3, user.getSurname());
-            ps.setString(4, user.getTelephone());
-            ps.setString(5, user.getEmail());
-            ps.setString(6, user.getPassword());
+            CallableStatement cs = con.connect().
+                    prepareCall("{CALL actualizar(?,?,?,?,?,?,?)}");
+
+            cs.setInt(1, user.getIdUser());
+            cs.setString(2, user.getUser());
+            cs.setString(3, user.getName());
+            cs.setString(4, user.getSurname());
+            cs.setString(5, user.getTelephone());
+            cs.setString(6, user.getEmail());
+            cs.setString(7, user.getPassword());
+
+            cs.execute();
+            con.disconnect();
+            cs.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Datos no actualizado.");
+        }
+    }
+
+    public static void delete(int idUser) {
+        try {
+
+            Connexion con = Connexion.getInstance();
+            PreparedStatement ps = con.connect().
+                    prepareStatement("delete from users where idUser = ?");
+
+            ps.setInt(1, idUser);
             ps.execute();
             con.disconnect();
             ps.close();
-            ps = null;
-
-            con.disconnect();
-            
-            return true;
 
         } catch (SQLException ex) {
-            System.out.println("Datos no insertados.");
+            System.out.println("Datos no eliminado.");
         }
-
-        return false;
     }
-
 }

@@ -11,6 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.multi.MultiLookAndFeel;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import javax.swing.plaf.synth.SynthLookAndFeel;
 
 public class FrmLogin extends JFrame {
 
@@ -23,7 +29,7 @@ public class FrmLogin extends JFrame {
         initComponents();
         setLocationRelativeTo(this);
         pintarImagen(lblImagen, RUTA_IMAGEN);
-        
+
     }
 
     /**
@@ -163,17 +169,16 @@ public class FrmLogin extends JFrame {
     private void btnEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnterActionPerformed
         validateUser();
     }//GEN-LAST:event_btnEnterActionPerformed
-    
-    
-    private void validateUser()  {
+
+    private void validateUser() {
         char[] password = txtPassword.getPassword();
-        
+
         String finalPassword = "";
-        
+
         for (char item : password) {
             finalPassword += item;
         }
-        
+
         if (!ValidationUser.user(txtUser.getText())
                 || !ValidationUser.password(finalPassword)) {
             JOptionPane.showMessageDialog(this, """
@@ -187,14 +192,14 @@ public class FrmLogin extends JFrame {
             frmRegistro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frmRegistro.setLocationRelativeTo(this);
         }
-        
-        setFocusAndClearUser();
+
+        setFocusAndClearTextFiel();
     }
 
-    public void setFocusAndClearUser() {
+    public void setFocusAndClearTextFiel() {
         txtUser.setText("");
         txtPassword.setText("");
-        
+
         txtUser.requestFocus();
         txtUser.selectAll();
     }
@@ -202,6 +207,7 @@ public class FrmLogin extends JFrame {
     private void lblRegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseClicked
         FrmRegister frmRegister = new FrmRegister(this);
         frmRegister.setVisible(true);
+
         frmRegister.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frmRegister.setLocationRelativeTo(this);
         this.setVisible(false);
@@ -215,12 +221,12 @@ public class FrmLogin extends JFrame {
     }//GEN-LAST:event_lblRegistrarseMouseEntered
 
     private void lblRegistrarseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarseMouseExited
-        
+
         lblRegistrarse.setFont(new Font("sansserif", 16, 16));
     }//GEN-LAST:event_lblRegistrarseMouseExited
 
     private void btnEnterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEnterKeyPressed
-        
+
     }//GEN-LAST:event_btnEnterKeyPressed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -228,14 +234,14 @@ public class FrmLogin extends JFrame {
     }//GEN-LAST:event_formKeyPressed
 
     private void txtUserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUserKeyPressed
-        if(evt.getKeyCode() == KEY_ENTER){
+        if (evt.getKeyCode() == KEY_ENTER) {
             validateUser();
         }
     }//GEN-LAST:event_txtUserKeyPressed
 
     private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
-        
-        if(evt.getKeyCode() == KEY_ENTER){
+
+        if (evt.getKeyCode() == KEY_ENTER) {
             validateUser();
         }
     }//GEN-LAST:event_txtPasswordKeyPressed
@@ -249,28 +255,33 @@ public class FrmLogin extends JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    UIManager.setLookAndFeel(new NimbusLookAndFeel());
+                } catch (UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(FrmLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 new FrmLogin().setVisible(true);
             }
         });

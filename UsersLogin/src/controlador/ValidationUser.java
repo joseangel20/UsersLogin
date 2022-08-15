@@ -1,12 +1,7 @@
 package controlador;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import modelo.Connexion;
 import static modelo.Connexion.read;
-import modelo.User;
+
 import vista.FrmLogin;
 
 public final class ValidationUser {
@@ -22,7 +17,7 @@ public final class ValidationUser {
             }
         }
 
-        return false;
+        return true;
     }
 
     public static Boolean password(String password) {
@@ -34,7 +29,7 @@ public final class ValidationUser {
                 }
             }
         }
-        return false;
+        return true;
     }
 
 }

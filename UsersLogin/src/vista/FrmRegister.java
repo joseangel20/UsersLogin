@@ -229,13 +229,13 @@ public class FrmRegister extends javax.swing.JFrame {
             frmRecords.setVisible(true);
         } else {
             frmLogin.setVisible(true);
-            frmLogin.setFocusAndClearUser();
+            frmLogin.setFocusAndClearTextFiel();
         }
     }//GEN-LAST:event_formWindowClosing
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
-        boolean tag = true;
+        
 
         String nameUser = txtUser.getText();
         String name = txtName.getText();
@@ -243,6 +243,8 @@ public class FrmRegister extends javax.swing.JFrame {
         String telephone = txtTelephone.getText();
         String email = txtEmail.getText();
 
+        boolean tag = true;
+        
         if (!ValidationRegister.validateUser(nameUser)) {
             lblUserError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
@@ -253,7 +255,6 @@ public class FrmRegister extends javax.swing.JFrame {
             tag = false;
         } else {
             lblUserError.setIcon(null);
-
         }
 
         if (!ValidationRegister.validateName(name)) {
@@ -352,14 +353,17 @@ public class FrmRegister extends javax.swing.JFrame {
             User user = factoryUser.user(nameUser, name, surname, telephone,
                     email, password);
 
-            if (!Connexion.insertDatos(user)) {
+            if (!Connexion.create(user)) {
                 System.out.println("La sentencia registrar no se completo "
                         + "correctamente.");
             }
-            
-            frmRecords.refreshTable();
-            frmRecords.setVisible(true);
-            
+
+            if (frmRecords != null) {
+                frmRecords.setVisible(true);
+            } else {
+                frmLogin.setVisible(true);
+            }
+
             this.dispose();
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed

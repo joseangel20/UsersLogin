@@ -6,27 +6,38 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Connexion;
 import java.util.ArrayList;
 
-public class FrmRecords extends JFrame {
+public final class FrmRecords extends JFrame {
 
-    private FrmLogin frmLogin;
-    private DefaultTableModel dtm;
-    private ArrayList<User> lista;
+    private final FrmLogin frmLogin;
+    private final DefaultTableModel dtm;
+    private final ArrayList<User> lista;
+    private int idUSer;
+    private int rowIndex;
 
     public FrmRecords(FrmLogin frmLogin) {
         initComponents();
         setLocationRelativeTo(this);
         this.frmLogin = frmLogin;
-        dtm = new DefaultTableModel();
+        dtm = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         String[] titulo = {"ID", "USUARIO", "NOMBRE/S", "APELLIDO/S",
             "TELEFONO", "EMAIL"};
         dtm.setColumnIdentifiers(titulo);
+
         tableUser.setModel(dtm);
+
         lista = Connexion.read();
+
         refreshTable();
     }
 
     public void refreshTable() {
+
         while (dtm.getRowCount() > 0) {
             dtm.removeRow(0);
         }
@@ -36,7 +47,6 @@ public class FrmRecords extends JFrame {
                 user.getName(), user.getSurname(), user.getTelephone(),
                 user.getEmail()});
         }
-
     }
 
     @SuppressWarnings("unchecked")
@@ -78,18 +88,27 @@ public class FrmRecords extends JFrame {
                 "Nombre de usuario", "Nombre", "Apellido", "Télefono", "Correo electronico"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tableUser.setColumnSelectionAllowed(true);
+        tableUser.setRowSelectionAllowed(true);
         tableUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableUser.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tableUser.getTableHeader().setReorderingAllowed(false);
+        tableUser.setShowGrid(false);
+        tableUser.setShowHorizontalLines(false);
+        tableUser.setShowVerticalLines(false);
         tableUser.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableUserMouseClicked(evt);
@@ -192,7 +211,19 @@ public class FrmRecords extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
+
+        for (User item : lista) {
+            if (item.getIdUser() == idUSer) {
+                FrmUpdateUser frmUpdateUser = new FrmUpdateUser(this, item);
+                frmUpdateUser.setVisible(true);
+                frmUpdateUser.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frmUpdateUser.setLocationRelativeTo(this);
+
+                this.setEnabled(false);
+                break;
+            }
+        }
+        validarDatosTableUSer();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -211,37 +242,48 @@ public class FrmRecords extends JFrame {
     private void btnNewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewUserActionPerformed
         FrmRegister frmRegister = new FrmRegister(this);
         frmRegister.setVisible(true);
+
         frmRegister.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frmRegister.setLocationRelativeTo(this);
+
         this.setVisible(false);
+        this.dispose();
 
     }//GEN-LAST:event_btnNewUserActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
 
-        
         int selectRow = tableUser.getSelectedRow();
 
         if (selectRow != -1) {
-            dtm.removeRow(tableUser.getSelectedRow());
+            dtm.removeRow(selectRow);
         }
-        
-        if (dtm.getRowCount() != 0) {
-            btnDelete.setEnabled(true);
-        } else {
-            btnDelete.setEnabled(false);
-        }
+        Connexion.delete(idUSer);
 
+        validarDatosTableUSer();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void tableUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUserMouseClicked
-       if (dtm.getColumnCount() != 0) {
-           if(tableUser.getSelectedColumn()> 0)
-            btnEdit.setEnabled(true);
-        } else {
-            btnEdit.setEnabled(false);
-        }
+        rowIndex = tableUser.getSelectedRow();
+        int columnIndex = 0;
+
+        idUSer = (int) tableUser.getModel().getValueAt(rowIndex, columnIndex);
+        validarDatosTableUSer();
     }//GEN-LAST:event_tableUserMouseClicked
+
+    private void validarDatosTableUSer() {
+        if (tableUser.getRowCount() == 0 || tableUser.getSelectedRow() == -1) {
+            btnEdit.setEnabled(false);
+        } else {
+            btnEdit.setEnabled(true);
+        }
+
+        if (tableUser.getRowCount() == 0 || tableUser.getSelectedRow() == -1) {
+            btnDelete.setEnabled(false);
+        } else {
+            btnDelete.setEnabled(true);
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
