@@ -235,75 +235,11 @@ public class FrmRegister extends javax.swing.JFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
-        
-
         String nameUser = txtUser.getText();
         String name = txtName.getText();
         String surname = txtSurname.getText();
         String telephone = txtTelephone.getText();
         String email = txtEmail.getText();
-
-        boolean tag = true;
-        
-        if (!ValidationRegister.validateUser(nameUser)) {
-            lblUserError.setIcon(
-                    new ImageIcon(getClass().getResource("/iconos/error.png")));
-
-            JOptionPane.showMessageDialog(this,
-                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
-                    JOptionPane.ERROR_MESSAGE);
-            tag = false;
-        } else {
-            lblUserError.setIcon(null);
-        }
-
-        if (!ValidationRegister.validateName(name)) {
-            lblNameError.setIcon(
-                    new ImageIcon(getClass().getResource("/iconos/error.png")));
-
-            JOptionPane.showMessageDialog(this,
-                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
-                    JOptionPane.ERROR_MESSAGE);
-            tag = false;
-        } else {
-            lblNameError.setIcon(null);
-        }
-
-        if (!ValidationRegister.validateSurname(surname)) {
-            lblSurnameError.setIcon(
-                    new ImageIcon(getClass().getResource("/iconos/error.png")));
-
-            JOptionPane.showMessageDialog(this,
-                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
-                    JOptionPane.ERROR_MESSAGE);
-            tag = false;
-        } else {
-            lblSurnameError.setIcon(null);
-        }
-
-        if (!ValidationRegister.validateTelephone(telephone)) {
-            lblTelephoneError.setIcon(
-                    new ImageIcon(getClass().getResource("/iconos/error.png")));
-
-            JOptionPane.showMessageDialog(this,
-                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
-                    JOptionPane.ERROR_MESSAGE);
-            tag = false;
-        } else {
-            lblTelephoneError.setIcon(null);
-        }
-
-        if (!ValidationRegister.validateEmail(email)) {
-            lblEmailError.setIcon(
-                    new ImageIcon(getClass().getResource("/iconos/error.png")));
-
-            JOptionPane.showMessageDialog(this,
-                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
-                    JOptionPane.ERROR_MESSAGE);
-            tag = false;
-        } else {
-            lblEmailError.setIcon(null);
-        }
 
         String password = "";
         for (char item : txtPassword.getPassword()) {
@@ -315,36 +251,91 @@ public class FrmRegister extends javax.swing.JFrame {
             confirmPassword += item;
         }
 
-        if (!ValidationRegister.validatePassword(password)) {
+        boolean tag = true;
+
+        if (!ValidationRegister.validateUser(nameUser)) {
+            lblUserError.setIcon(
+                    new ImageIcon(getClass().getResource("/iconos/error.png")));
+
+            JOptionPane.showMessageDialog(this,
+                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
+                    JOptionPane.ERROR_MESSAGE);
+            tag = false;
+        } else if (!ValidationRegister.validateName(name)) {
+
+            lblUserError.setIcon(null);
+            lblNameError.setIcon(
+                    new ImageIcon(getClass().getResource("/iconos/error.png")));
+
+            JOptionPane.showMessageDialog(this,
+                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
+                    JOptionPane.ERROR_MESSAGE);
+            tag = false;
+        } else if (!ValidationRegister.validateSurname(surname)) {
+
+            lblNameError.setIcon(null);
+            lblSurnameError.setIcon(
+                    new ImageIcon(getClass().getResource("/iconos/error.png")));
+
+            JOptionPane.showMessageDialog(this,
+                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
+                    JOptionPane.ERROR_MESSAGE);
+            tag = false;
+        } else if (!ValidationRegister.validateTelephone(telephone)) {
+
+            lblSurnameError.setIcon(null);
+            lblTelephoneError.setIcon(
+                    new ImageIcon(getClass().getResource("/iconos/error.png")));
+
+            JOptionPane.showMessageDialog(this,
+                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
+                    JOptionPane.ERROR_MESSAGE);
+            tag = false;
+        } else if (!ValidationRegister.validateEmail(email)) {
+
+            lblTelephoneError.setIcon(null);
+            lblEmailError.setIcon(
+                    new ImageIcon(getClass().getResource("/iconos/error.png")));
+
+            JOptionPane.showMessageDialog(this,
+                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
+                    JOptionPane.ERROR_MESSAGE);
+            tag = false;
+
+        } else if (!ValidationRegister.validatePassword(password)) {
+            lblEmailError.setIcon(null);
+
             lblPasswordError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
             JOptionPane.showMessageDialog(this,
-                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
+                    "Este campo es obligatorio.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else {
+        } else if (!ValidationRegister.validatePassword(confirmPassword)) {
+
             lblPasswordError.setIcon(null);
-        }
-
-        if (!ValidationRegister.validatePassword(confirmPassword)) {
-
             lblConfirmPasswordError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
             JOptionPane.showMessageDialog(this,
-                    "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
+                    "Este campo es obligatorio.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
+        } else if (!password.equals(confirmPassword)) {
+
+            lblPasswordError.setIcon(
+                    new ImageIcon(getClass().getResource("/iconos/error.png")));
+            lblConfirmPasswordError.setIcon(
+                    new ImageIcon(getClass().getResource("/iconos/error.png")));
+            JOptionPane.showMessageDialog(this,
+                    "Los campos de la nueva contraseña "
+                    + "no coinciden", "CAMPOS INCORRECTO",
+                    JOptionPane.ERROR_MESSAGE);
+            tag = false;
+
         } else {
             lblConfirmPasswordError.setIcon(null);
-        }
-
-        if (!password.equals(confirmPassword)) {
-            JOptionPane.showMessageDialog(this,
-                    "La contraseña no coinciden", "CONTRASEÑAS NO COINCIDEN",
-                    JOptionPane.ERROR_MESSAGE);
-            tag = false;
         }
 
         if (tag) {
@@ -356,15 +347,17 @@ public class FrmRegister extends javax.swing.JFrame {
             if (!Connexion.create(user)) {
                 System.out.println("La sentencia registrar no se completo "
                         + "correctamente.");
-            }
-
-            if (frmRecords != null) {
-                frmRecords.setVisible(true);
             } else {
-                frmLogin.setVisible(true);
-            }
 
-            this.dispose();
+                if (frmRecords != null) {
+                    frmRecords.refreshTable();
+                    frmRecords.setVisible(true);
+
+                } else {
+                    frmLogin.setVisible(true);
+                }
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

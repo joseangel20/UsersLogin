@@ -17,7 +17,7 @@ public final class ValidationUser {
             }
         }
 
-        return true;
+        return false;
     }
 
     public static Boolean password(String password) {
@@ -29,7 +29,7 @@ public final class ValidationUser {
                 }
             }
         }
-        return true;
+        return false;
     }
 
 }

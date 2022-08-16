@@ -4,19 +4,13 @@ import java.awt.Image;
 import javax.swing.*;
 import controlador.*;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.font.TextAttribute;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.multi.MultiLookAndFeel;
+
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.swing.plaf.synth.SynthLookAndFeel;
 
 public class FrmLogin extends JFrame {
 
@@ -186,11 +180,13 @@ public class FrmLogin extends JFrame {
                                                 Si no está registrado debe registrarse""",
                     "DATOS DE USUARIOS", JOptionPane.WARNING_MESSAGE);
         } else {
-            setVisible(false);
-            FrmRecords frmRegistro = new FrmRecords(this);
-            frmRegistro.setVisible(true);
-            frmRegistro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frmRegistro.setLocationRelativeTo(this);
+
+            this.setVisible(false);
+            FrmPrincipal frmPrincipal = new FrmPrincipal(this);
+            frmPrincipal.setVisible(true);
+            frmPrincipal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frmPrincipal.setLocationRelativeTo(this);
+            
         }
 
         setFocusAndClearTextFiel();
@@ -290,7 +286,7 @@ public class FrmLogin extends JFrame {
     private void pintarImagen(JLabel lbl, String ruta) {
         imagen = new ImageIcon(ruta);
         icono = new ImageIcon(imagen.getImage()
-                .getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(),
+                .getScaledInstance(lbl.getWidth(), lbl.getHeight(),
                         Image.SCALE_DEFAULT));
 
         lbl.setIcon(icono);

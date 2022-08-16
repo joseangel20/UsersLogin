@@ -24,7 +24,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
 
         this.frmRecords = frmRecords;
         this.user = user;
-
+        
         txtUser.setText(user.getUser());
         txtName.setText(user.getName());
         txtSurname.setText(user.getSurname());
@@ -115,21 +115,21 @@ public class FrmUpdateUser extends javax.swing.JFrame {
             }
         });
 
-        lblUserError.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblUserError.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        lblNameError.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblNameError.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        lblSurnameError.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblSurnameError.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        lblTelephoneError.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblTelephoneError.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        lblEmailError.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblEmailError.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        lblPasswordCurrentError.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblPasswordCurrentError.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        lblPasswordError.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblPasswordError.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        lblConfirmPasswordError.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        lblConfirmPasswordError.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -154,16 +154,12 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                     .addComponent(lblNameError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblSurnameError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblTelephoneError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel5)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel8)))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtEmail)
@@ -213,10 +209,11 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                                 .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lblEmailError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(txtPasswordCurrent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPasswordCurrentError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPasswordCurrentError, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(txtPasswordCurrent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -252,7 +249,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-
+        
         String nameUser = txtUser.getText();
         String name = txtName.getText();
         String surname = txtSurname.getText();
@@ -360,6 +357,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
 
                     } else {
                         lblConfirmPasswordError.setIcon(null);
+                        user.setPassword(password);
                     }
 
                 } else {
@@ -378,6 +376,12 @@ public class FrmUpdateUser extends javax.swing.JFrame {
         }
 
         if (tag) {
+            user.setUser(nameUser);
+            user.setName(name);
+            user.setSurname(surname);
+            user.setTelephone(telephone);
+            user.setEmail(email);
+            
             Connexion.update(user);
             frmRecords.refreshTable();
             frmRecords.setEnabled(true);

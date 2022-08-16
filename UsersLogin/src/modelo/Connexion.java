@@ -125,7 +125,7 @@ public final class Connexion {
             cs.setString(5, user.getTelephone());
             cs.setString(6, user.getEmail());
             cs.setString(7, user.getPassword());
-
+            
             cs.execute();
             con.disconnect();
             cs.close();
