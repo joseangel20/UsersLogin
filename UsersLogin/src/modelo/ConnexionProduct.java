@@ -1,10 +1,11 @@
 package modelo;
 
-import modelo.user.User;
+import modelo.product.Product;
+
 import java.sql.*;
 import java.util.ArrayList;
 
-public final class Connexion {
+public final class ConnexionProduct {
 
     private final String bd = "usuario";
     private final String url = "jdbc:mysql://localhost:3306/";
@@ -12,21 +13,21 @@ public final class Connexion {
     private final String password = "";
     private final String driver = "com.mysql.cj.jdbc.Driver";
     private Connection connection;
-    private static Connexion CONNEXION = null;
+    private static ConnexionProduct CONNEXION = null;
 
-    public Connexion() {
+    public ConnexionProduct() {
     }
 
     private static synchronized void createInstance() {
         if (CONNEXION == null) {
-            CONNEXION = new Connexion();
+            CONNEXION = new ConnexionProduct();
         }
     }
 
-    public static final Connexion getInstance() {
+    public static final ConnexionProduct getInstance() {
         if (CONNEXION == null) {
             createInstance();
-            CONNEXION = new Connexion();
+            CONNEXION = new ConnexionProduct();
         }
 
         return CONNEXION;
@@ -52,26 +53,23 @@ public final class Connexion {
         }
     }
 
-    public static boolean create(User user) {
+    public static boolean create(Product product) {
 
         try {
 
-            Connexion con = Connexion.getInstance();
+            ConnexionProduct con = ConnexionProduct.getInstance();
 
             CallableStatement cs
-                    = con.connect().prepareCall("{CALL introducirDatos(?,?,?,?,?,?)}");
+                    = con.connect().prepareCall("{CALL introducirProducto(?,?,?,?,?)}");
 
-            cs.setString(1, user.getUser());
-            cs.setString(2, user.getName());
-            cs.setString(3, user.getSurname());
-            cs.setString(4, user.getTelephone());
-            cs.setString(5, user.getEmail());
-            cs.setString(6, user.getPassword());
+            cs.setString(1, product.getName());
+            cs.setString(2, product.getMark());
+            cs.setString(3, product.getCategory());
+            cs.setFloat(4, product.getPrice());
+            cs.setInt(5, product.getStock());
+
             cs.execute();
-            con.disconnect();
-            cs.close();
-            cs = null;
-
+            cs.close();    
             con.disconnect();
 
             return true;
@@ -83,26 +81,24 @@ public final class Connexion {
         return false;
     }
 
-    public static ArrayList<User> read() {
-        ArrayList<User> lista = new ArrayList<>();
+    public static ArrayList<Product> read() {
+        ArrayList<Product> lista = new ArrayList<>();
 
         try {
 
-            Connexion con = Connexion.getInstance();
+            ConnexionProduct con = ConnexionProduct.getInstance();
             PreparedStatement ps
-                    = con.connect().prepareStatement("SELECT * FROM users");
+                    = con.connect().prepareStatement("SELECT * FROM productos");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                lista.add(
-                        new User(rs.getInt("IDUser"), rs.getString("nameUser"),
-                                rs.getString("name"),
-                                rs.getString("surname"), rs.getString("telephone"),
-                                rs.getString("email"), rs.getString("clave")));
+                lista.add(new Product(rs.getInt("idProducto"), rs.getString("nombreProducto"),
+                                rs.getString("marcaProducto"), rs.getString("categoria"),
+                                rs.getFloat("precioProducto"), rs.getInt("stockProduct")));
             }
-            ps = null;
-
+            
             con.disconnect();
+            ps.close();
 
         } catch (SQLException ex) {
             System.out.println("No se pudo leer los datos.");
@@ -111,22 +107,19 @@ public final class Connexion {
         return lista;
     }
 
-    public static void update(User user) {
+    public static void update(Product product) {
 
         try {
 
-            Connexion con = Connexion.getInstance();
+            ConnexionProduct con = ConnexionProduct.getInstance();
             CallableStatement cs = con.connect().
                     prepareCall("{CALL actualizar(?,?,?,?,?,?,?)}");
 
-            cs.setInt(1, user.getIdUser());
-            cs.setString(2, user.getUser());
-            cs.setString(3, user.getName());
-            cs.setString(4, user.getSurname());
-            cs.setString(5, user.getTelephone());
-            cs.setString(6, user.getEmail());
-            cs.setString(7, user.getPassword());
-            
+            cs.setString(1, product.getName());
+            cs.setString(2, product.getMark());
+            cs.setString(3, product.getCategory());
+            cs.setString(4, String.valueOf(product.getPrice()));
+
             cs.execute();
             con.disconnect();
             cs.close();
@@ -136,14 +129,14 @@ public final class Connexion {
         }
     }
 
-    public static void delete(int idUser) {
+    public static void delete(int idProduct) {
         try {
 
-            Connexion con = Connexion.getInstance();
+            ConnexionProduct con = ConnexionProduct.getInstance();
             PreparedStatement ps = con.connect().
                     prepareStatement("delete from users where idUser = ?");
 
-            ps.setInt(1, idUser);
+            ps.setInt(1, idProduct);
             ps.execute();
             con.disconnect();
             ps.close();

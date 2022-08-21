@@ -32,7 +32,7 @@
               <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
               <Component id="lblUser" min="-2" pref="128" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-              <Component id="lblUser1" min="-2" pref="128" max="-2" attributes="0"/>
+              <Component id="lblProduct" min="-2" pref="128" max="-2" attributes="0"/>
               <EmptySpace pref="35" max="32767" attributes="0"/>
               <Component id="btnCloseSession" min="-2" pref="140" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -44,7 +44,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblUser1" min="-2" pref="182" max="-2" attributes="0"/>
+                  <Component id="lblProduct" min="-2" pref="182" max="-2" attributes="0"/>
                   <Component id="lblUser" min="-2" pref="182" max="-2" attributes="0"/>
                   <Component id="btnCloseSession" alignment="1" min="-2" pref="34" max="-2" attributes="0"/>
               </Group>
@@ -88,7 +88,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCloseSessionActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblUser1">
+    <Component class="javax.swing.JLabel" name="lblProduct">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="0"/>
@@ -110,6 +110,9 @@
         <Property name="horizontalTextPosition" type="int" value="0"/>
         <Property name="verticalTextPosition" type="int" value="3"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblProductMouseClicked"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

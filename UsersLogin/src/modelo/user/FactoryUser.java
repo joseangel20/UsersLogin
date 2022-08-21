@@ -1,4 +1,4 @@
-package modelo;
+package modelo.user;
 
 public class FactoryUser implements IFactoryPerson {
 

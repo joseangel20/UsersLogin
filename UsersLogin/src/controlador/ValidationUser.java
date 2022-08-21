@@ -2,7 +2,7 @@ package controlador;
 
 import static modelo.Connexion.read;
 
-import vista.FrmLogin;
+import vista.usuario.FrmLogin;
 
 public final class ValidationUser {
 

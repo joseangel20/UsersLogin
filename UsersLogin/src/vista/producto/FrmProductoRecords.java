@@ -1,47 +1,26 @@
-package vista;
+package vista.producto;
 
-import modelo.User;
+import vista.usuario.FrmPrincipal;
+
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
-import modelo.Connexion;
+import modelo.ConnexionProduct;
 import java.util.ArrayList;
+import modelo.product.Product;
 
-public final class FrmRecords extends JFrame {
+public final class FrmProductoRecords extends JFrame {
 
-    private FrmLogin frmLogin;
     private FrmPrincipal frmPrincipal;
     private final DefaultTableModel dtm;
-    private ArrayList<User> lista;
-    private int idUSer;
+    private ArrayList<Product> lista;
+    private int idProduct;
     private int rowIndex;
 
-    public FrmRecords(FrmLogin frmLogin) {
+    public FrmProductoRecords(FrmPrincipal frmPrincipal) {
         initComponents();
-        setLocationRelativeTo(this);
-        this.frmLogin = frmLogin;
-        dtm = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
 
-        String[] titulo = {"ID", "USUARIO", "NOMBRE/S", "APELLIDO/S",
-            "TELEFONO", "EMAIL"};
-        dtm.setColumnIdentifiers(titulo);
-
-        tableUser.setModel(dtm);
-
-        lista = Connexion.read();
-
-        refreshTable();
-    }
-    
-    public FrmRecords(FrmPrincipal frmPrincipal) {
-        initComponents();
-        setLocationRelativeTo(this);
         this.frmPrincipal = frmPrincipal;
-        
+
         dtm = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -49,31 +28,29 @@ public final class FrmRecords extends JFrame {
             }
         };
 
-        String[] titulo = {"ID", "USUARIO", "NOMBRE/S", "APELLIDO/S",
-            "TELEFONO", "EMAIL"};
+        String[] titulo = {"ID", "NOMBRE", "MARCA", "CATEGORIA", "PRECIO",
+            "DISPONIBLE"};
         dtm.setColumnIdentifiers(titulo);
 
         tableUser.setModel(dtm);
 
-        lista = Connexion.read();
+        lista = ConnexionProduct.read();
 
         refreshTable();
-    }
-    
-    public void sendFrmLogin(FrmLogin frmLogin){
-        this.frmLogin = frmLogin;
     }
 
     public void refreshTable() {
-        lista = Connexion.read();
+        lista = ConnexionProduct.read();
         while (dtm.getRowCount() > 0) {
             dtm.removeRow(0);
         }
 
-        for (User user : lista) {
-            dtm.addRow(new Object[]{user.getIdUser(), user.getUser(),
-                user.getName(), user.getSurname(), user.getTelephone(),
-                user.getEmail()});
+        for (Product product : lista) {
+            dtm.addRow(new Object[]{
+                product.getIdProduct(), product.getName(),
+                product.getMark(), product.getCategory(), String.valueOf(product.getPrice()),
+                String.valueOf(product.getStock())
+            });
         }
     }
 
@@ -86,9 +63,6 @@ public final class FrmRecords extends JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableUser = new javax.swing.JTable();
         btnNewUser = new javax.swing.JButton();
-        btnClose = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -149,7 +123,7 @@ public final class FrmRecords extends JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -165,32 +139,6 @@ public final class FrmRecords extends JFrame {
         btnNewUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewUserActionPerformed(evt);
-            }
-        });
-
-        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cross.png"))); // NOI18N
-        btnClose.setText("CERRAR SECCION");
-        btnClose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCloseActionPerformed(evt);
-            }
-        });
-
-        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pencil.png"))); // NOI18N
-        btnEdit.setText("ACTUALIZAR");
-        btnEdit.setEnabled(false);
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-
-        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/trash.png"))); // NOI18N
-        btnDelete.setText("ELIMINAR");
-        btnDelete.setEnabled(false);
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
             }
         });
 
@@ -210,99 +158,57 @@ public final class FrmRecords extends JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnNewUser, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                        .addGap(42, 42, 42)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addGap(29, 29, 29)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewUser, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-
-        for (User item : lista) {
-            if (item.getIdUser() == idUSer) {
-                FrmUpdateUser frmUpdateUser = new FrmUpdateUser(this, item);
-                frmUpdateUser.setVisible(true);
-                frmUpdateUser.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frmUpdateUser.setLocationRelativeTo(this);
-                
-                this.setEnabled(false);
-                break;
-            }
-        }
-        validarDatosTableUSer();
-    }//GEN-LAST:event_btnEditActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
 
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        frmLogin.setVisible(true);
+        frmPrincipal.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
-    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-        frmLogin.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCloseActionPerformed
-
     private void btnNewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewUserActionPerformed
-        FrmRegister frmRegister = new FrmRegister(this);
-        frmRegister.setVisible(true);
+        FrmProductoRegister frmProductoRegister = new FrmProductoRegister(this);
+        frmProductoRegister.setVisible(true);
 
-        frmRegister.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frmRegister.setLocationRelativeTo(this);
+        frmProductoRegister.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frmProductoRegister.setLocationRelativeTo(this);
 
         this.setVisible(false);
         this.dispose();
 
     }//GEN-LAST:event_btnNewUserActionPerformed
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-
-        int selectRow = tableUser.getSelectedRow();
-
-        if (selectRow != -1) {
-            dtm.removeRow(selectRow);
-        }
-        Connexion.delete(idUSer);
-
-        validarDatosTableUSer();
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void tableUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUserMouseClicked
         rowIndex = tableUser.getSelectedRow();
         int columnIndex = 0;
 
-        idUSer = (int) tableUser.getModel().getValueAt(rowIndex, columnIndex);
-        validarDatosTableUSer();
+        //idUSer = (int) tableUser.getModel().getValueAt(rowIndex, columnIndex);
+        //validarDatosTableUSer();
     }//GEN-LAST:event_tableUserMouseClicked
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -310,26 +216,9 @@ public final class FrmRecords extends JFrame {
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void validarDatosTableUSer() {
-        if (tableUser.getRowCount() == 0 || tableUser.getSelectedRow() == -1) {
-            btnEdit.setEnabled(false);
-        } else {
-            btnEdit.setEnabled(true);
-        }
-
-        if (tableUser.getRowCount() == 0 || tableUser.getSelectedRow() == -1) {
-            btnDelete.setEnabled(false);
-        } else {
-            btnDelete.setEnabled(true);
-        }
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnNewUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

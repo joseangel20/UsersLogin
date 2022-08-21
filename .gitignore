@@ -24,3 +24,5 @@ hs_err_pid*
 /UsersLogin/nbproject/private/
 /UsersLogin/build/
 /UsersLogin/dist/
+/UsersLogin/src/vista/usuario/FrmLogin.java
+/UsersLogin/src/vista/usuario/FrmLogin.form

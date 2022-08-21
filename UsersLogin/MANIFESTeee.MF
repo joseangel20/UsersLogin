@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: Jose Angel Garcia Mendez
+Main-Class: FrmLogin
+X-COMMENT: Practica final, universitaria

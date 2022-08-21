@@ -1,23 +1,23 @@
-package vista;
+package vista.usuario;
 
-import modelo.User;
-import modelo.FactoryUser;
+import modelo.user.User;
+import modelo.user.FactoryUser;
 import controlador.*;
 import javax.swing.*;
 import modelo.Connexion;
 
-public class FrmRegister extends javax.swing.JFrame {
+public class FrmUserRegister extends javax.swing.JFrame {
 
     private FrmLogin frmLogin;
-    private FrmRecords frmRecords;
+    private FrmUserRecords frmRecords;
     public static FactoryUser factoryUser;
 
-    public FrmRegister(FrmLogin frmLogin) {
+    public FrmUserRegister(FrmLogin frmLogin) {
         initComponents();
         this.frmLogin = frmLogin;
     }
 
-    public FrmRegister(FrmRecords frmRecords) {
+    public FrmUserRegister(FrmUserRecords frmRecords) {
         initComponents();
         this.frmRecords = frmRecords;
     }
@@ -124,19 +124,20 @@ public class FrmRegister extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtEmail)
                             .addComponent(txtTelephone, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel4))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addComponent(lblSurnameError, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTelephoneError, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEmailError, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,9 +166,9 @@ public class FrmRegister extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(23, 23, 23)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -253,7 +254,7 @@ public class FrmRegister extends javax.swing.JFrame {
 
         boolean tag = true;
 
-        if (!ValidationRegister.validateUser(nameUser)) {
+        if (!ValidarCampos.isStringBlank(nameUser)) {
             lblUserError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
@@ -261,7 +262,7 @@ public class FrmRegister extends javax.swing.JFrame {
                     "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validateName(name)) {
+        } else if (!ValidarCampos.isStringBlank(name)) {
 
             lblUserError.setIcon(null);
             lblNameError.setIcon(
@@ -271,7 +272,7 @@ public class FrmRegister extends javax.swing.JFrame {
                     "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validateSurname(surname)) {
+        } else if (!ValidarCampos.isStringBlank(surname)) {
 
             lblNameError.setIcon(null);
             lblSurnameError.setIcon(
@@ -281,7 +282,7 @@ public class FrmRegister extends javax.swing.JFrame {
                     "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validateTelephone(telephone)) {
+        } else if (!ValidarCampos.isStringBlank(telephone)) {
 
             lblSurnameError.setIcon(null);
             lblTelephoneError.setIcon(
@@ -291,7 +292,7 @@ public class FrmRegister extends javax.swing.JFrame {
                     "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validateEmail(email)) {
+        } else if (!ValidarCampos.isStringBlank(email)) {
 
             lblTelephoneError.setIcon(null);
             lblEmailError.setIcon(
@@ -302,7 +303,7 @@ public class FrmRegister extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
 
-        } else if (!ValidationRegister.validatePassword(password)) {
+        } else if (!ValidarCampos.isStringBlank(password)) {
             lblEmailError.setIcon(null);
 
             lblPasswordError.setIcon(
@@ -312,7 +313,7 @@ public class FrmRegister extends javax.swing.JFrame {
                     "Este campo es obligatorio.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validatePassword(confirmPassword)) {
+        } else if (!ValidarCampos.isStringBlank(confirmPassword)) {
 
             lblPasswordError.setIcon(null);
             lblConfirmPasswordError.setIcon(

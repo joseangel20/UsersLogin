@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package vista;
+package vista.usuario;
 
-import controlador.ValidationRegister;
+import controlador.ValidarCampos;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.Connexion;
-import modelo.User;
+import modelo.user.User;
 
 /**
  *
@@ -16,15 +16,15 @@ import modelo.User;
  */
 public class FrmUpdateUser extends javax.swing.JFrame {
 
-    private FrmRecords frmRecords;
+    private FrmUserRecords frmRecords;
     private User user;
 
-    public FrmUpdateUser(FrmRecords frmRecords, User user) {
+    public FrmUpdateUser(FrmUserRecords frmRecords, User user) {
         initComponents();
 
         this.frmRecords = frmRecords;
         this.user = user;
-        
+
         txtUser.setText(user.getUser());
         txtName.setText(user.getName());
         txtSurname.setText(user.getSurname());
@@ -249,7 +249,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        
+
         String nameUser = txtUser.getText();
         String name = txtName.getText();
         String surname = txtSurname.getText();
@@ -273,7 +273,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
 
         boolean tag = true;
 
-        if (!ValidationRegister.validateUser(nameUser)) {
+        if (!ValidarCampos.isStringBlank(nameUser)) {
             lblUserError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
@@ -281,7 +281,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                     "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validateName(name)) {
+        } else if (!ValidarCampos.isStringBlank(name)) {
             lblNameError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
@@ -289,7 +289,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                     "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validateSurname(surname)) {
+        } else if (!ValidarCampos.isStringBlank(surname)) {
             lblSurnameError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
@@ -297,7 +297,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                     "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validateTelephone(telephone)) {
+        } else if (!ValidarCampos.isStringBlank(telephone)) {
             lblTelephoneError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
@@ -305,7 +305,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                     "Todos los campos son obligatorios.", "CAMPO IMCOMPLETO",
                     JOptionPane.ERROR_MESSAGE);
             tag = false;
-        } else if (!ValidationRegister.validateEmail(email)) {
+        } else if (!ValidarCampos.isStringBlank(email)) {
             lblEmailError.setIcon(
                     new ImageIcon(getClass().getResource("/iconos/error.png")));
 
@@ -326,7 +326,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                 if (passwordCurrent.equals(user.getPassword())) {
 
                     lblPasswordCurrentError.setIcon(null);
-                    if (!ValidationRegister.validatePassword(password)) {
+                    if (!ValidarCampos.isStringBlank(password)) {
                         lblPasswordError.setIcon(
                                 new ImageIcon(getClass().getResource("/iconos/error.png")));
 
@@ -334,7 +334,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                                 "Este campo es obligatorio.", "CAMPO IMCOMPLETO",
                                 JOptionPane.ERROR_MESSAGE);
                         tag = false;
-                    } else if (!ValidationRegister.validatePassword(confirmPassword)) {
+                    } else if (!ValidarCampos.isStringBlank(confirmPassword)) {
                         lblPasswordError.setIcon(null);
                         lblConfirmPasswordError.setIcon(
                                 new ImageIcon(getClass().getResource("/iconos/error.png")));
@@ -344,7 +344,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
                                 JOptionPane.ERROR_MESSAGE);
                         tag = false;
                     } else if (!password.equals(confirmPassword)) {
-                       
+
                         lblPasswordError.setIcon(
                                 new ImageIcon(getClass().getResource("/iconos/error.png")));
                         lblConfirmPasswordError.setIcon(
@@ -381,7 +381,7 @@ public class FrmUpdateUser extends javax.swing.JFrame {
             user.setSurname(surname);
             user.setTelephone(telephone);
             user.setEmail(email);
-            
+
             Connexion.update(user);
             frmRecords.refreshTable();
             frmRecords.setEnabled(true);

@@ -1,4 +1,4 @@
-package modelo;
+package modelo.user;
 
 public class User extends Person {
 

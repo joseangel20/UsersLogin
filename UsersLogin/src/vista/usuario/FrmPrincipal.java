@@ -2,17 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package vista;
+package vista.usuario;
+
+import vista.producto.FrmProductoRecords;
 
 import java.awt.Image;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
  *
@@ -36,53 +33,15 @@ public class FrmPrincipal extends javax.swing.JFrame {
         this.frmLogin = frmLogin;
     }
 
-    public void pintarImagen(JLabel lbl, String ruta) {
-        imagen = new ImageIcon(ruta);
-        icono = new ImageIcon(imagen.getImage()
-                .getScaledInstance(lbl.getWidth(), lbl.getHeight(),
-                        Image.SCALE_DEFAULT));
-
-        lbl.setIcon(icono);
-    }
-
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-////        try {
-////            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-////                if ("Nimbus".equals(info.getName())) {
-////                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-////                    break;
-////                }
-////            }
-////        } catch (ClassNotFoundException ex) {
-////            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-////        } catch (InstantiationException ex) {
-////            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-////        } catch (IllegalAccessException ex) {
-////            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-////        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-////            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-////        }
-//        //</editor-fold>
-//        //</editor-fold>
+//    public void pintarImagen(JLabel lbl, String ruta) {
+//        imagen = new ImageIcon(ruta);
+//        icono = new ImageIcon(imagen.getImage()
+//                .getScaledInstance(lbl.getWidth(), lbl.getHeight(),
+//                        Image.SCALE_DEFAULT));
 //
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                try {
-//                    UIManager.setLookAndFeel(new NimbusLookAndFeel());
-//                } catch (UnsupportedLookAndFeelException ex) {
-//                    Logger.getLogger(FrmLogin.class.getName()).log(Level.SEVERE, 
-//                            null, ex);
-//                }
-//                new FrmPrincipal().setVisible(true);
-//            }
-//        });
+//        lbl.setIcon(icono);
 //    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -94,7 +53,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         lblUser = new javax.swing.JLabel();
         btnCloseSession = new javax.swing.JButton();
-        lblUser1 = new javax.swing.JLabel();
+        lblProduct = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PANTALLA PRINCIPAL");
@@ -127,15 +86,20 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        lblUser1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblUser1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUser1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/product_negocio.png"))); // NOI18N
-        lblUser1.setText("Productos");
-        lblUser1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        lblUser1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        lblUser1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblUser1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblUser1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblProduct.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblProduct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/product_negocio.png"))); // NOI18N
+        lblProduct.setText("Productos");
+        lblProduct.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        lblProduct.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        lblProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblProduct.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblProduct.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        lblProduct.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblProductMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,7 +109,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 .addGap(51, 51, 51)
                 .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
-                .addComponent(lblUser1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(btnCloseSession, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -155,7 +119,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblUser1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCloseSession, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(37, Short.MAX_VALUE))
@@ -166,8 +130,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void lblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUserMouseClicked
         this.setVisible(false);
-        FrmRecords frmRegistro = new FrmRecords(this);
-        frmRegistro.sendFrmLogin(frmLogin);
+        FrmUserRecords frmRegistro = new FrmUserRecords(this);
+        //frmRegistro.setFrmLogin(frmLogin);
         frmRegistro.setVisible(true);
         frmRegistro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frmRegistro.setLocationRelativeTo(this);
@@ -183,9 +147,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
+    private void lblProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblProductMouseClicked
+        this.setVisible(false);
+        FrmProductoRecords frmProductoRecords = new FrmProductoRecords(this);
+        //frmRecords.setFrmLogin(frmLogin);
+        frmProductoRecords.setVisible(true);
+        frmProductoRecords.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frmProductoRecords.setLocationRelativeTo(this);
+    }//GEN-LAST:event_lblProductMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCloseSession;
+    private javax.swing.JLabel lblProduct;
     private javax.swing.JLabel lblUser;
-    private javax.swing.JLabel lblUser1;
     // End of variables declaration//GEN-END:variables
 }

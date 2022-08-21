@@ -1,4 +1,4 @@
-package modelo;
+package modelo.user;
 
 public interface IFactoryPerson {
     User user(String user, String name, String surname, String telephone, 
